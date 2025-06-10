@@ -15,7 +15,7 @@ resource "aws_ecs_task_definition" "app" {
     image     = "nginx:latest" # replace with ECR image
     essential = true
     portMappings = [{
-      containerPort = 80    # replace with specific port or use 8080/https
+      containerPort = 80    # utilize specific port if possible or use 8080/https
       protocol      = "tcp"
     }]
   }])
