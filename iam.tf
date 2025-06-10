@@ -26,7 +26,7 @@ resource "aws_iam_policy" "aurora_access" {
     Statement = [{
       Effect   = "Allow"
       Action   = "rds-db:connect"
-      Resource = "arn:aws:rds-db:${var.aws_region}:${var.account_id}:dbuser/${aws_rds_cluster.aurora.id}/db_user"
+      Resource = "arn:aws:rds-db:${var.aws_region}:${local.account_id}:dbuser/${aws_rds_cluster.aurora.id}/db_user"
     }]
   })
 }
