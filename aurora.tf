@@ -1,20 +1,14 @@
 resource "aws_rds_cluster" "aurora" {
   cluster_identifier      = "aurora-serverless-cluster"
-  engine                  = "aurora-mysql"
-  engine_mode             = "provisioned"
+  engine                 = "aurora-mysql"
+  engine_version         = "8.0.mysql_aurora.3.05.2"
   database_name           = "alloydb"
+  master_username        = jsondecode(data.aws_secretsmanager_secret_version.db_password_version.secret_string)["username"]
+  master_password        = jsondecode(data.aws_secretsmanager_secret_version.db_password_version.secret_string)["password"]
   iam_database_authentication_enabled = true
   db_subnet_group_name    = aws_db_subnet_group.aurora.name
   vpc_security_group_ids  = [aws_security_group.aurora_sg.id]
   skip_final_snapshot     = true
-
-  scaling_configuration {
-    min_capacity = 1
-    max_capacity = 2
-    auto_pause   = true
-    seconds_until_auto_pause = 300
-  }
-
   enable_http_endpoint = true
 }
 
@@ -42,3 +36,12 @@ resource "aws_security_group" "aurora_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+resource "aws_rds_cluster_instance" "aurora_instance" {
+  identifier         = "aurora-serverless-v2-instance"
+  cluster_identifier = aws_rds_cluster.aurora.id
+  instance_class     = "db.serverless"
+  engine            = aws_rds_cluster.aurora.engine
+  engine_version    = aws_rds_cluster.aurora.engine_version
+}
+

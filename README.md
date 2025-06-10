@@ -18,6 +18,7 @@ Decisions:
 
 - Compute infra will use ECS Fargate because this reduces some infrastructure management and integrates with containers easily. the ECS will be deployed in a private subnet to protect it against the internet.
 - AWS Aurora Serverless will be used. This is slightly more expensive than RDS but is more scalable, reliable, and durable.
+- Aurora Master password is stored in Secret Manager, this can be done via Console or via Terraform with SOPS. This terraform code will retrieve a secret from Secret Manager 
 - ECS authenticates to Aurora using IAM policy that allows it to generate temporary authentication token instead of password. To avoids using long term credentials.
 - Only outbound traffic is allowed by security group. Inbound traffic was not specified because it is not needed.
 
