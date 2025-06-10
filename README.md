@@ -18,11 +18,12 @@ Decisions:
 
 - Compute infra will use ECS Fargate because this reduces some infrastructure management and integrates with containers easily. the ECS will be deployed in a private subnet to protect it against the internet.
 - AWS Aurora Serverless will be used. This is slightly more expensive than RDS but is more scalable, reliable, and durable.
+- ECS authenticates to Aurora using IAM policy that allows it to generate temporary authentication token instead of password. To avoids using long term credentials.
 - Only outbound traffic is allowed by security group. Inbound traffic was not specified because it is not needed.
 
 Additional thoughts/improvements in no particular order:
 
-- Use locals where possible.
+- Use variables/locals where applicable.
 - Use a secret manager as needed and avoid long term credentials where possible.
 - Enforce not pushing to main without a PR.
 - Add CI/CD scans.

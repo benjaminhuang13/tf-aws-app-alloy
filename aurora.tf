@@ -2,15 +2,14 @@ resource "aws_rds_cluster" "aurora" {
   cluster_identifier      = "aurora-serverless-cluster"
   engine                  = "aurora-mysql"
   engine_mode             = "provisioned"
-  database_name           = "mydb"
-  master_username         = "admin"
-  master_password         = "MySecurePass123!"
+  database_name           = "alloydb"
+  iam_database_authentication_enabled = true
   db_subnet_group_name    = aws_db_subnet_group.aurora.name
   vpc_security_group_ids  = [aws_security_group.aurora_sg.id]
   skip_final_snapshot     = true
 
   scaling_configuration {
-    min_capacity = 0.5
+    min_capacity = 1
     max_capacity = 2
     auto_pause   = true
     seconds_until_auto_pause = 300

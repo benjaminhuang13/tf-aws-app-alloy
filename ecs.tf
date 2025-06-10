@@ -18,6 +18,10 @@ resource "aws_ecs_task_definition" "app" {
       containerPort = 80    # utilize specific port if possible or use 8080/https
       protocol      = "tcp"
     }]
+    environment = [
+        { name = "DB_HOST", value = aws_rds_cluster.aurora.endpoint },
+        { name = "DB_USER", value = "db_user" }
+      ]
   }])
 }
 
